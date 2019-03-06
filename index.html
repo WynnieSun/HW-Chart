@@ -34,9 +34,7 @@
     var legendW=15;
     var legendH=15;
     var legendpadding=5;
-    var dataPj=d3.json("color.json");
-    var dataPc=d3.csv("color.csv");
-    var dataset=[dataPj,dataPc];
+    var dataPc=d3.csv("Cause.json");
     var drawChart = function(data){
       var svg=d3.select("body")
                 .selectAll("svg")
@@ -51,14 +49,13 @@
            return i*(barwidth+barpadding)
          })
          .attr("y",function(d){
-           return height- d.num*20
+           return height- d.time*20
          })
          .attr("width",barwidth)
          .attr("height",function(d){
-           return d.num*20
+           return d.time*20
          })
-         .attr("fill",function(d){
-           return d.color
+         .attr("fill","red"
          })
       // labels
       svg.selectAll("text")
@@ -66,13 +63,13 @@
          .enter()
          .append("text")
          .text(function(d){
-           return d.num;
+           return d.time;
          })
          .attr("x",function(d,i){
            return i*(barwidth+barpadding)+barwidth/2
          })
          .attr("y",function(d){
-           return height- d.num*20-5
+           return height- d.time*20-5
          })
          .attr("text-anchor","middle")
          .style("font-size",15)
@@ -102,20 +99,13 @@
            return d.color
          })
     }
-    dataset.forEach(function(d){
-      d.then(function(data){
+    dataPc.then(function(data){
         drawChart(data)
       })
     })
     </script>
 
 
-
-
-<h2>json</h2>
-    <svg class="json">
-      <g class="legend"></g>
-    </svg>
 <h2>csv</h2>
     <svg class="csv">
       <g class="legend"></g>

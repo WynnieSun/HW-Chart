@@ -1,0 +1,26 @@
+[
+  {
+    "step":"Define the Problem",
+    "time":15
+  }
+  {
+    "step":"Determine the Root Causes of the Problem",
+    "time":10
+  }
+  {
+    "step":"Develop Alternative Solutions",
+    "time":5
+  }
+  {
+    "step":"Select a Solution",
+    "time":15
+  }
+  {
+    "step":"Implement the Solution",
+    "time":45
+  }
+  {
+    "step":"Evaluate the Outcome",
+    "time":10
+  }
+]
