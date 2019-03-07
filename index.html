@@ -7,10 +7,8 @@
       margin-left: 10%;
       margin-bottom: 50px
     }
-  svg.json:hover{
-    border: solid;
   }
-  svg.csv:hover{
+  svg.json:hover{
     border: solid;
   }
   h2{
@@ -28,13 +26,19 @@
   <script type="text/javascript">
     var width=500;
     var chartW=300
-    var height=250;
+    var height=550;
     var barpadding=5;
     var barwidth=(chartW/7)-barpadding;
     var legendW=15;
     var legendH=15;
     var legendpadding=5;
-    var dataPc=d3.csv("Cause.json");
+
+    var data=d3.json("Cause.json");
+    // set scale
+    var yScale = d3.scaleLinear()
+        .domain([0, d3.max(data,function(d){return d.time})])
+        .range([0,height]);
+
     var drawChart = function(data){
       var svg=d3.select("body")
                 .selectAll("svg")
@@ -49,11 +53,11 @@
            return i*(barwidth+barpadding)
          })
          .attr("y",function(d){
-           return height- d.time*20
+           return height- yScale(d.time)*10
          })
          .attr("width",barwidth)
          .attr("height",function(d){
-           return d.time*20
+           return d.time*10
          })
          .attr("fill","red")
       // labels
@@ -68,55 +72,20 @@
            return i*(barwidth+barpadding)+barwidth/2
          })
          .attr("y",function(d){
-           return height- d.time*20-5
+           return height- d.time*10-5
          })
          .attr("text-anchor","middle")
          .style("font-size",15)
-      //legend
-      svg.select("g").selectAll("rect")
-         .data(data)
-         .enter()
-         .append("rect")
-         .attr("x",chartW+50)
-         .attr("y",function(d,i){
-           return i*(legendH+legendpadding)
-         })
-         .attr("width",legendW)
-         .attr("height",legendH)
-         .attr("fill",function(d){
-           return d.color
-         })
-      svg.select("g").selectAll("text")
-         .data(data)
-         .enter()
-         .append("text")
-         .attr("x",chartW+legendW+65)
-         .attr("y",function(d,i){
-          return i*(legendH+legendpadding)+15
-         })
-         .text(function(d){
-           return d.color
-         })
     }
-    dataPc.then(function(data){
+    data.then(function(data){
         drawChart(data)
       })
-    })
     </script>
 
 
-<h2>csv</h2>
-    <svg class="csv">
-      <g class="legend"></g>
+<h2>Graph</h2>
+    <svg class="json">
     </svg>
-  <div>
-    <h3>Extra work</h3>
-    <ol>
-      <li>Add number label on each bar</li>
-      <li>Minimize the amount of code by using <b>forEach function</b></li>
-    </ol>
-  </div>
 
-
-  </body>
+</body>
 </html>
