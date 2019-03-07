@@ -36,6 +36,7 @@
     var padding = 20;
 
     var data=d3.json("Cause.json");
+
     // set scale
     var yScale = d3.scaleLinear()
         .domain([0, 50])
@@ -73,6 +74,7 @@
          .data(color)
          .attr("fill",function(d){
            return d})
+
       // labels
       svg.selectAll("text")
          .data(data)
@@ -89,11 +91,13 @@
          })
          .attr("text-anchor","middle")
          .style("font-size",15)
+
       //Create Y axis
 			svg.append("g")
 				.attr("class", "axis")
 				.attr("transform", "translate(25,130)")
 				.call(yAxis);
+
       //legend
 svg.select("g").selectAll("rect")
    .data(color)
