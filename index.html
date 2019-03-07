@@ -5,14 +5,14 @@
   svg{
       display: block;
       margin-left: 10%;
-      margin-bottom: 50px
+      margin-bottom: 70px
     }
-  }
-  svg.json:hover{
-    border: solid;
-  }
   h2{
-    margin-left: 300px;
+    margin-top:40px;
+    margin-left: 200px;
+  }
+  h3{
+    margin-left:70px;
   }
   div{
     position: absolute;
@@ -24,20 +24,30 @@
 </head>
 <body>
   <script type="text/javascript">
-    var width=500;
+    var color = ["#DD6E42","#E8DAB2","#6E9075","#C0D6DF","#EAEAEA","#5D737E"]
+    var width=700;
     var chartW=300
-    var height=550;
+    var height=450;
     var barpadding=5;
     var barwidth=(chartW/7)-barpadding;
-    var legendW=15;
-    var legendH=15;
-    var legendpadding=5;
+    var legendW=25;
+    var legendH=20;
+    var legendpadding=7;
+    var padding = 20;
 
     var data=d3.json("Cause.json");
     // set scale
     var yScale = d3.scaleLinear()
-        .domain([0, d3.max(data,function(d){return d.time})])
-        .range([0,height]);
+        .domain([0, 50])
+        .range([0, 300]);
+    var yAScale = d3.scaleLinear()
+        .domain([0, 50])
+        .range([300, 0])
+
+    //Define Y axis
+        var yAxis = d3.axisLeft()
+                  .scale(yAScale);
+
 
     var drawChart = function(data){
       var svg=d3.select("body")
@@ -50,16 +60,19 @@
          .enter()
          .append("rect")
          .attr("x",function(d,i){
-           return i*(barwidth+barpadding)
+           return i*(barwidth+barpadding) + 45
          })
          .attr("y",function(d){
-           return height- yScale(d.time)*10
+           return height- yScale(d.time) - padding;
          })
          .attr("width",barwidth)
          .attr("height",function(d){
-           return d.time*10
+           return yScale(d.time)
          })
-         .attr("fill","red")
+      svg.selectAll("rect")
+         .data(color)
+         .attr("fill",function(d){
+           return d})
       // labels
       svg.selectAll("text")
          .data(data)
@@ -69,13 +82,44 @@
            return d.time;
          })
          .attr("x",function(d,i){
-           return i*(barwidth+barpadding)+barwidth/2
+           return i*(barwidth+barpadding)+barwidth/2 + 45
          })
          .attr("y",function(d){
-           return height- d.time*10-5
+           return height- yScale(d.time) - 5
          })
          .attr("text-anchor","middle")
          .style("font-size",15)
+      //Create Y axis
+			svg.append("g")
+				.attr("class", "axis")
+				.attr("transform", "translate(25,130)")
+				.call(yAxis);
+      //legend
+svg.select("g").selectAll("rect")
+   .data(color)
+   .enter()
+   .append("rect")
+   .attr("x",chartW+50)
+   .attr("y",function(d,i){
+     return i*(legendH+legendpadding)+10
+   })
+   .attr("width",legendW)
+   .attr("height",legendH)
+   .attr("fill",function(d){
+     return d
+   })
+svg.select("g").selectAll("text")
+   .data(data)
+   .enter()
+   .append("text")
+   .attr("x",chartW+legendW+65)
+   .attr("y",function(d,i){
+    return i*(legendH+legendpadding)+25
+   })
+   .text(function(d){
+     return d.step
+   })
+
     }
     data.then(function(data){
         drawChart(data)
@@ -83,8 +127,10 @@
     </script>
 
 
-<h2>Graph</h2>
+<h2>Visual Cause</h2>
+<h3>Expected Time(%) for Each Step of Problem Solving</h3>
     <svg class="json">
+    <g class="legend"></g>
     </svg>
 
 </body>
