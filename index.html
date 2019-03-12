@@ -64,11 +64,11 @@
            return i*(barwidth+barpadding) + 45
          })
          .attr("y",function(d){
-           return height- yAScale(d.time) - padding;
+           return height- yScale(d.time) - padding;
          })
          .attr("width",barwidth)
          .attr("height",function(d){
-           return yAScale(d.time)
+           return yScale(d.time)
          })
       svg.selectAll("rect")
          .data(color)
@@ -87,7 +87,7 @@
            return i*(barwidth+barpadding)+barwidth/2 + 45
          })
          .attr("y",function(d){
-           return height- yAScale(d.time) - 5
+           return height- yScale(d.time) - 5
          })
          .attr("text-anchor","middle")
          .style("font-size",15)
@@ -97,7 +97,6 @@
 				.attr("class", "axis")
 				.attr("transform", "translate(25,130)")
 				.call(yAxis);
-
       //legend
 svg.select("g").selectAll("rect")
    .data(color)
